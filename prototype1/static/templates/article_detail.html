@@ -1,0 +1,14 @@
+{% extends 'base.html' %}
+
+{% block title %}{{ article.title }}{% endblock %}
+
+{% block content %}
+<div class="max-w-4xl mx-auto bg-white p-6 rounded-lg shadow-md">
+    <h1 class="text-3xl font-bold">{{ article.title }}</h1>
+    <p class="text-gray-500 mb-4">Gepubliceerd op {{ article.created_at|date:"F j, Y" }} door {{ article.author.username }}</p>
+    <div class="prose max-w-none">
+        <p>{{ article.content }}</p>
+    </div>
+</div>
+{% endblock %}
+
