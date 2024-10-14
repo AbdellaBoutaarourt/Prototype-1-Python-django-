@@ -13,11 +13,12 @@ from django.contrib.auth.forms import AuthenticationForm
 @login_required
 def add_article(request):
     if request.method == 'POST':
-        form = ArticleForm(request.POST)
+        form = ArticleForm(request.POST, request.FILES)  # Handle file uploads
         if form.is_valid():
             article = form.save(commit=False)
-            article.author = request.user
+            article.author = request.user  # Assign the current user as the author
             article.save()
+            messages.success(request, 'Article added successfully!')
             return redirect('articles:article_list')
     else:
         form = ArticleForm()
@@ -27,9 +28,29 @@ def article_list(request):
     articles = Article.objects.all()
     return render(request, 'article_list.html', {'articles': articles})
 
+def delete_article(request, article_id):
+    article = get_object_or_404(Article, id=article_id)
+
+    if request.user == article.author:
+        article.delete()
+        messages.success(request, 'Article deleted successfully.')
+    else:
+        messages.error(request, 'You are not allowed to delete this article.')
+
+    return redirect('articles:article_list')
+
+
 def article_detail(request, id):
     article = get_object_or_404(Article, id=id)
     return render(request, 'article_detail.html', {'article': article})
+
+def my_boxers(request):
+    if request.user.is_authenticated:
+        articles = Article.objects.filter(author=request.user)  # Replace 'author' with the correct field for the user in your Article model
+    else:
+        articles = []
+
+    return render(request, 'my_boxers.html', {'articles': articles})
 
 def register(request):
     if request.method == 'POST':

@@ -3,12 +3,26 @@
 {% block title %}{{ article.title }}{% endblock %}
 
 {% block content %}
-<div class="max-w-4xl mx-auto bg-white p-6 rounded-lg shadow-md">
-    <h1 class="text-3xl font-bold">{{ article.title }}</h1>
-    <p class="text-gray-500 mb-4">Gepubliceerd op {{ article.created_at|date:"F j, Y" }} door {{ article.author.username }}</p>
-    <div class="prose max-w-none">
-        <p>{{ article.content }}</p>
+<div class="container mt-5 w-75">
+    <div class="card shadow-lg border-0">
+        <div class="card-header bg-primary text-white text-center">
+            <h2 class="font-weight-bold">{{ article.title }}</h2>
+        </div>
+        <div class="card-body flex flex-column w-full">
+            <div class="flex justify-content-center">
+                     {% if article.image %}
+                <img src="{{ article.image.url }}" class="img-fluid rounded mb-4 content" alt="{{ article.title }}" style="max-width: 600px; height: auto;">
+            {% endif %}
+            </div>
+
+            <div>
+                <p class="mt-4 lead">{{ article.content }}</p>
+
+            </div>
+        </div>
+        <div class="card-footer text-center">
+            <a href="{% url 'articles:article_list' %}" class="btn btn-secondary btn-lg">Back to Articles List</a>
+        </div>
     </div>
 </div>
 {% endblock %}
-

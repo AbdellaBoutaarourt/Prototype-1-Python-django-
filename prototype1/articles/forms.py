@@ -7,7 +7,7 @@ from django.contrib.auth.forms import UserCreationForm
 class ArticleForm(forms.ModelForm):
     class Meta:
         model = Article
-        fields = ['title', 'content']
+        fields = ['title', 'content', 'image']
 
 
 class UserRegistrationForm(UserCreationForm):
