@@ -1,3 +1,5 @@
+{% load static %}
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -11,7 +13,7 @@
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div class="flex justify-between h-16">
                 <div class="flex">
-                    <a href="{% url 'articles:overview' %}" class="text-xl font-bold text-blue-600 my-auto">ExpertLab</a>
+                    <a href="{% url 'articles:article_list' %}" class="text-xl font-bold text-blue-600 my-auto">ExpertLab</a>
                 </div>
                 <div class="flex items-center space-x-4">
                     {% if user.is_authenticated %}

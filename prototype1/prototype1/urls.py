@@ -15,11 +15,15 @@ Including another URLconf
     2. Add a URL to urlpatterns:  path('blog/', include('blog.urls'))
 """
 from django.contrib import admin
-from django.urls import path
+from django.urls import path, include
+from django.shortcuts import redirect
+from django.contrib.auth import views as auth_views
+
 
 urlpatterns = [
     path('login/', auth_views.LoginView.as_view(), name='login'),
     path('logout/', auth_views.LogoutView.as_view(), name='logout'),
-    path('articles/', include('articles.urls')),
-
+    path('articles/', include('articles.urls')),  # Koppel de 'articles' app
+    path('', lambda request: redirect('articles:article_list')),  # Redirect root naar artikelenlijst
 ]
+
