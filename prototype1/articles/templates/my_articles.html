@@ -1,0 +1,38 @@
+{% extends 'base.html' %}
+
+{% block title %}My Boxers{% endblock %}
+
+{% block content %}
+<div class="max-w-7xl mx-auto">
+    <h2 class="text-3xl font-semibold mb-6">My Boxers</h2>
+
+    {% if articles %}
+        <div class="row">
+            {% for article in articles %}
+                <div class="col-md-4 mt-3">
+                    <div class="card mb-4">
+                        {% if article.image %}
+                            <img src="{{ article.image.url }}" class="card-img-top" alt="{{ article.title }}">
+                        {% endif %}
+                        <div class="card-body">
+                            <h5 class="card-title">{{ article.title }}</h5>
+                            <p class="card-text">{{ article.content|truncatewords:20 }}</p>
+                            <a href="{% url 'articles:article_detail' article.id %}" class="btn btn-primary mt-3">Read More</a>
+
+                            {% if request.user == article.author %}
+                                <a href="{% url 'articles:edit_article' article.id %}" class="btn btn-warning mt-2">Edit</a> <!-- Edit button -->
+                                <form action="{% url 'articles:delete_article' article.id %}" method="POST" class="mt-2">
+                                    {% csrf_token %}
+                                    <button type="submit" class="btn btn-danger">Delete</button>
+                                </form>
+                            {% endif %}
+                        </div>
+                    </div>
+                </div>
+            {% endfor %}
+        </div>
+    {% else %}
+        <p>You have not created any articles yet.</p>
+    {% endif %}
+</div>
+{% endblock %}

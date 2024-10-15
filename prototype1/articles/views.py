@@ -44,13 +44,27 @@ def article_detail(request, id):
     article = get_object_or_404(Article, id=id)
     return render(request, 'article_detail.html', {'article': article})
 
-def my_boxers(request):
+def my_article(request):
     if request.user.is_authenticated:
-        articles = Article.objects.filter(author=request.user)  # Replace 'author' with the correct field for the user in your Article model
+        articles = Article.objects.filter(author=request.user)
     else:
         articles = []
 
-    return render(request, 'my_boxers.html', {'articles': articles})
+    return render(request, 'my_articles.html', {'articles': articles})
+
+def edit_article(request, article_id):
+    article = get_object_or_404(Article, id=article_id, author=request.user)
+
+    if request.method == 'POST':
+        form = ArticleForm(request.POST, request.FILES, instance=article)
+        if form.is_valid():
+            form.save()
+            return redirect('articles:my_article')
+    else:
+        form = ArticleForm(instance=article)
+
+    return render(request, 'edit_article.html', {'form': form, 'article': article})
+
 
 def register(request):
     if request.method == 'POST':
